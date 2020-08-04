@@ -12,6 +12,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author bharatpothina
+ * 
+ * Helper class does the following:
+ * 	- Reads each line (road) from city.txt file.
+ *  - Establishes the city connections based on the given roads in the file.
+ *  - For the given origin and destination inputs from the REST endpoint, the network of city connections are traversed 
+ *    and origin-destination connection is determined.
+ *
+ */
 @Component
 public class ConnectedCitiesHelper {
 
@@ -23,6 +33,12 @@ public class ConnectedCitiesHelper {
     private String destination;
     private boolean isConnected;
 	
+    /**
+     * @param origin
+     * @param destination
+     * @return
+     * @throws IOException
+     */
     public String areCitiesConnected(String origin, String destination) throws IOException {
     	this.origin = origin;
     	this.destination = destination;
@@ -33,6 +49,10 @@ public class ConnectedCitiesHelper {
     	}
     }
 
+    /**
+     * @return
+     * @throws IOException
+     */
     private String traverseAndDetermineCityConnections() throws IOException {
     	isConnected = false;
 		try (BufferedReader reader = 
@@ -54,6 +74,10 @@ public class ConnectedCitiesHelper {
 		}
 	}
 
+    /**
+     * @param city1
+     * @param city2
+     */
     private void buildCityConnections(String city1, String city2) {
     	LinkedHashSet<String> adjacentCity = adjacentCitiesMap.get(city1);
     	if(adjacentCity == null) {
@@ -63,6 +87,10 @@ public class ConnectedCitiesHelper {
     	adjacentCity.add(city2);
     }
     
+    /**
+     * @param traversedCities
+     * @return
+     */
     private String determineCityConnections(LinkedList<String> traversedCities)
 	{
 	    LinkedList<String> cityList = null;
